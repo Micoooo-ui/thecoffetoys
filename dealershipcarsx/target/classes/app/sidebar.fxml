@@ -24,7 +24,7 @@
 
     <Button fx:id="inventoryBtn" maxWidth="1.7976931348623157E308" onAction="#handleNavigateDashboard" style="-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-cursor: hand; -fx-font-size: 14px;" text="Inventory Dashboard" />
 
-    <Button fx:id="transactionsBtn" maxWidth="1.7976931348623157E308" onAction="#handleNavigateTransactions" style="-fx-background-color: #334155; -fx-text-fill: #FFFFFF; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-cursor: hand; -fx-font-size: 14px; -fx-background-radius: 6;" text="Sales &amp; Transactions" />
+    <Button fx:id="transactionsBtn" maxWidth="1.7976931348623157E308" onAction="#handleNavigateTransactions" style="-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-cursor: hand; -fx-font-size: 14px;" text="Sales &amp; Transactions" />
 
     <Button fx:id="logoutBtn" maxWidth="1.7976931348623157E308" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-cursor: hand; -fx-font-size: 14px;" text="Log Out" />
 

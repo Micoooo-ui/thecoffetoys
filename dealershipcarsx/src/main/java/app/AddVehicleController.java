@@ -24,11 +24,17 @@ public class AddVehicleController implements Initializable {
     private vehicle vehicleToEdit;
     private boolean isEditMode = false;
 
-    public void setDashboardController(DashboardController dashboardController) {
-        this.dashboardController = dashboardController;
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        // Populate status dropdown options
+        statusField.setItems(FXCollections.observableArrayList("Available", "Reserved", "Sold"));
     }
 
-    // Populate fields when editing an existing vehicle
+    public void setDashboardController(DashboardController controller) {
+        this.dashboardController = controller;
+    }
+
+    // This method populates the fields when editing an existing vehicle
     public void initEditData(vehicle v) {
         this.vehicleToEdit = v;
         this.isEditMode = true;
@@ -41,24 +47,18 @@ public class AddVehicleController implements Initializable {
         statusField.setValue(v.getStatus());
     }
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        statusField.setItems(FXCollections.observableArrayList("Available", "Reserved", "Sold"));
-        statusField.setValue("Available");
-    }
-
     @FXML
-    private void handleSaveVehicle() {
+    public void handleSaveVehicle() {
         try {
             String brand = brandField.getText();
             String model = modelField.getText();
             String name = nameField.getText();
             int year = Integer.parseInt(yearField.getText());
             double price = Double.parseDouble(priceField.getText());
-            String status = statusField.getValue();
+            String status = statusField.getValue() != null ? statusField.getValue() : "Available";
 
             if (isEditMode) {
-                // Update the existing object fields
+                // Update existing vehicle properties
                 vehicleToEdit.setBrand(brand);
                 vehicleToEdit.setModel(model);
                 vehicleToEdit.setName(name);
@@ -66,12 +66,11 @@ public class AddVehicleController implements Initializable {
                 vehicleToEdit.setPrice(price);
                 vehicleToEdit.setStatus(status);
 
-                // Refresh table view
                 if (dashboardController != null) {
                     dashboardController.updateVehicleInList(vehicleToEdit, vehicleToEdit);
                 }
             } else {
-                // Create brand new vehicle
+                // Create new vehicle
                 vehicle newVehicle = new vehicle(brand, model, name, year, price, status);
                 if (dashboardController != null) {
                     dashboardController.addVehicleToList(newVehicle);
@@ -80,12 +79,12 @@ public class AddVehicleController implements Initializable {
 
             closeWindow();
         } catch (NumberFormatException e) {
-            System.out.println("Error: Please enter valid numbers for Year and Price.");
+            System.err.println("Please enter valid numbers for Year and Price.");
         }
     }
 
     @FXML
-    private void handleCancel() {
+    public void handleCancel() {
         closeWindow();
     }
 

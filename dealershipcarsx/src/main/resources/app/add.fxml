@@ -11,7 +11,7 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="680.0" prefWidth="700.0" style="-fx-background-color: white; -fx-background-radius: 10;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.AddVehicleController">
     <children>
-        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="8.0" prefWidth="670.0" style="-fx-text-fill: #1E293B;" text="ADD NEW VEHICLE">
+        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="8.0" prefWidth="670.0" style="-fx-text-fill: #1E293B;" text="ADD/EDIT NEW VEHICLE">
             <font>
                 <Font name="Arial Rounded MT Bold" size="20.0" />
             </font>

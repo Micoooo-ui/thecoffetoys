@@ -1,44 +1,59 @@
 package app;
 
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
 
 public class SidebarController {
 
     @FXML
-    private void handleNavigateDashboard(javafx.event.ActionEvent event) {
-        loadScene(event, "dashboard.fxml", "VYC Motors - Admin Dashboard");
+    public void handleNavigateDashboard(ActionEvent event) {
+        switchScene(event, "dashboard.fxml");
     }
 
     @FXML
-    private void handleNavigateTransactions(javafx.event.ActionEvent event) {
-        loadScene(event, "transaction.fxml", "VYC Motors - Transactions");
+    public void handleNavigateTransactions(ActionEvent event) {
+        switchScene(event, "transaction.fxml");
     }
 
     @FXML
-    private void handleLogout(javafx.event.ActionEvent event) {
-        loadScene(event, "login.fxml", "VYC Motors - Admin Log In");
+    public void handleLogout(ActionEvent event) {
+        switchScene(event, "login.fxml");
     }
 
-    private void loadScene(javafx.event.ActionEvent event, String fxmlFile, String title) {
+    private void switchScene(ActionEvent event, String fxmlFile) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlFile));
+            // Relative to the app package (where SidebarController lives)
+            URL fileUrl = getClass().getResource(fxmlFile);
+            if (fileUrl == null) {
+                showAlert("Navigation Error", "Could not find file: " + fxmlFile);
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(fileUrl);
             Parent root = loader.load();
-
-            Button sourceButton = (Button) event.getSource();
-            Stage stage = (Stage) sourceButton.getScene().getWindow();
-
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-            stage.setTitle(title);
-            stage.centerOnScreen();
+            stage.show();
         } catch (IOException e) {
             e.printStackTrace();
+            showAlert("Loading Error", "Failed to load " + fxmlFile + "\n\nReason: " + e.getMessage());
         }
+    }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
     }
 }
