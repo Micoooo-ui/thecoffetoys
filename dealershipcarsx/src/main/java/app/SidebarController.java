@@ -7,10 +7,12 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.Node;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 
 public class SidebarController {
 
@@ -26,7 +28,17 @@ public class SidebarController {
 
     @FXML
     public void handleLogout(ActionEvent event) {
-        switchScene(event, "login.fxml");
+        // Confirmation alert before exiting the application
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Logout Confirmation");
+        confirmAlert.setHeaderText(null);
+        confirmAlert.setContentText("Are you sure you want to log out and exit the application?");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            // Completely stops and ends the Java program
+            System.exit(0);
+        }
     }
 
     private void switchScene(ActionEvent event, String fxmlFile) {

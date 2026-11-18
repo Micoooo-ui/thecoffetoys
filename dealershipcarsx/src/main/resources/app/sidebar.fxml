@@ -8,12 +8,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="700.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #1E293B;" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.SidebarController">
+<VBox prefHeight="800.0" prefWidth="220.0" spacing="10.0" style="-fx-background-color: #1E293B;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.SidebarController">
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
 
-    <Label text="TCT DEALERSHIP" textFill="WHITE">
+    <Label text="VYC MOTORS" textFill="WHITE">
         <font>
             <Font name="System Bold" size="18.0" />
         </font>
@@ -28,9 +28,11 @@
 
     <Button fx:id="logoutBtn" maxWidth="1.7976931348623157E308" onAction="#handleLogout" style="-fx-background-color: transparent; -fx-text-fill: #94A3B8; -fx-alignment: CENTER_LEFT; -fx-padding: 10 15; -fx-cursor: hand; -fx-font-size: 14px;" text="Log Out" />
 
-    <ImageView fitHeight="231.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true">
-        <image>
-            <Image url="@../../../../../../../../../Downloads/leeeeee.jpg" />
-        </image>
-    </ImageView>
+    <VBox alignment="BOTTOM_CENTER" VBox.vgrow="ALWAYS">
+        <ImageView fitHeight="200.0" fitWidth="177.0" pickOnBounds="true" preserveRatio="true">
+            <image>
+                <Image url="@../../../../../../../../../Downloads/leeeeee.jpg" />
+            </image>
+        </ImageView>
+    </VBox>
 </VBox>
