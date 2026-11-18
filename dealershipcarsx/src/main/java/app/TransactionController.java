@@ -57,7 +57,7 @@ public class TransactionController implements Initializable {
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        // Format amount column with commas and 2 decimal places (e.g., ₱1,455,000.00)
+        // Format amount column with commas and 2 decimal places (₱1,455,000.00)
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         amountColumn.setCellFactory(col -> new TableCell<Transaction, Double>() {
             private final DecimalFormat formatter = new DecimalFormat("#,##0.00");
@@ -79,6 +79,7 @@ public class TransactionController implements Initializable {
         transactionFilterCombo.setItems(FXCollections.observableArrayList("All", "Sale", "Reservation", "Inventory Addition"));
         transactionFilterCombo.setValue("All");
 
+        // Listen for type filter and search input changes
         transactionFilterCombo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateFilter());
         if (searchTransactionField != null) {
             searchTransactionField.textProperty().addListener((observable, oldValue, newValue) -> updateFilter());
