@@ -40,7 +40,7 @@ A desktop-based Car Dealership Management System built with **Java** and **JavaF
 ##  Tech Stack
 
 * **Language:** Java (JDK 17+)
-* **UI Framework:** JavaFX (FXML, Scene Builder, CSS styling)
+* **UI Framework:** JavaFX (FXML, Scene Builder)
 * **Data Structures:** Java Collections (`ArrayList`, `ObservableList`, `FilteredList`)
 * **IDE:** IntelliJ IDEA
 
