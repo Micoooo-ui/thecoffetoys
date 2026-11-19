@@ -47,7 +47,7 @@ public class LoginController {
         showAlert(
                 Alert.AlertType.INFORMATION,
                 "Forgot Password",
-                "Default admin credentials: Username = " + VALID_USERNAME + " | Password = " + VALID_PASSWORD
+                "Default admin credentials: \nUsername = " + VALID_USERNAME + "\nPassword = " + VALID_PASSWORD
         );
     }
 
