@@ -50,5 +50,5 @@ A desktop-based Car Dealership Management System built with **Java** and **JavaF
 
 1. **Clone the repository:**
    ```bash
-   git clone [https://github.com/your-username/thecoffetoys.git](https://github.com/your-username/thecoffetoys.git)
+   git clone [https://github.com/Micoooo-ui/thecoffetoys.git](https://github.com/your-username/thecoffetoys.git)
    cd thecoffetoys
