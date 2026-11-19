@@ -53,7 +53,12 @@ public class DashboardController implements Initializable {
             new vehicle("Toyota", "Fortuner", "V Diesel", 2024, 1957000.0, "Reserved"),
             new vehicle("Mazda", "CX-5", "Sport", 2023, 1950000.0, "Available"),
             new vehicle("Hyundai", "Tucson", "GLS", 2023, 1570000.0, "Sold"),
-            new vehicle("Suzuki", "Jimny", "GLX AllGrip", 2024, 1285000.0, "Available")
+            new vehicle("Suzuki", "Jimny", "GLX AllGrip", 2024, 1285000.0, "Available"),
+            new vehicle("Honda", "Civic", "RS Turbo", 2024, 1798000.0, "Available"),
+            new vehicle("Mitsubishi", "Xpander", "GLS", 2023, 1129000.0, "Available"),
+            new vehicle("Nissan", "Terra", "VL 4x4", 2024, 2439000.0, "Reserved"),
+            new vehicle("Toyota", "Innova", "Zenix Q Hybrid", 2024, 1953000.0, "Sold"),
+            new vehicle("Kia", "Stonic", "Style AT", 2023, 935000.0, "Available")
     );
 
     private FilteredList<vehicle> filteredVehicles;

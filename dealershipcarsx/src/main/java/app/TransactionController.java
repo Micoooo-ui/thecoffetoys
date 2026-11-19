@@ -44,7 +44,12 @@ public class TransactionController implements Initializable {
             new Transaction("TXN-1007", "Toyota Fortuner V Diesel", "Andres Bonifacio", "Reservation", 1957000.0, "2026-11-07"),
             new Transaction("TXN-1008", "Mazda CX-5 Sport", "Emilio Aguinaldo", "Inventory Addition", 1950000.0, "2026-11-08"),
             new Transaction("TXN-1009", "Hyundai Tucson GLS", "Apolinario Mabini", "Sale", 1570000.0, "2026-11-09"),
-            new Transaction("TXN-1010", "Suzuki Jimny GLX AllGrip", "Gabriela Silang", "Inventory Addition", 1285000.0, "2026-11-10")
+            new Transaction("TXN-1010", "Suzuki Jimny GLX AllGrip", "Gabriela Silang", "Inventory Addition", 1285000.0, "2026-11-10"),
+            new Transaction("TXN-1011", "Honda Civic RS Turbo", "Diego Silang", "Inventory Addition", 1798000.0, "2026-11-11"),
+            new Transaction("TXN-1012", "Mitsubishi Xpander GLS", "Melchora Aquino", "Inventory Addition", 1129000.0, "2026-11-12"),
+            new Transaction("TXN-1013", "Nissan Terra VL 4x4", "Antonio Luna", "Reservation", 2439000.0, "2026-11-13"),
+            new Transaction("TXN-1014", "Toyota Innova Zenix Q Hybrid", "Gregoria de Jesus", "Sale", 1953000.0, "2026-11-14"),
+            new Transaction("TXN-1015", "Kia Stonic Style AT", "Ramon Magsaysay", "Inventory Addition", 935000.0, "2026-11-15")
     );
 
     private FilteredList<Transaction> filteredTransactions;
