@@ -12,9 +12,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import vehicle.vehicle;
 
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class TransactionController implements Initializable {
@@ -35,24 +37,15 @@ public class TransactionController implements Initializable {
     @FXML private ComboBox<String> transactionFilterCombo;
 
     public static ObservableList<Transaction> globalTransactionList = FXCollections.observableArrayList(
-            new Transaction("TXN-1001", "Toyota Hilux Conquest", "Juan Dela Cruz", "Inventory Addition", 1455000.0, "2026-11-01"),
-            new Transaction("TXN-1002", "Ford Ranger Wildtrak", "Maria Santos", "Reservation", 1949000.0, "2026-11-02"),
-            new Transaction("TXN-1003", "Mitsubishi Montero Sport", "Carlos Gomez", "Inventory Addition", 1568000.0, "2026-11-03"),
-            new Transaction("TXN-1004", "Toyota Vios G CVT", "Ana Reyes", "Inventory Addition", 1035000.0, "2026-11-04"),
-            new Transaction("TXN-1005", "Honda CR-V V Turbo", "Pedro Penduko", "Sale", 2150000.0, "2026-11-05"),
-            new Transaction("TXN-1006", "Nissan Navara PRO-4X", "Jose Rizal", "Inventory Addition", 1850000.0, "2026-11-06"),
-            new Transaction("TXN-1007", "Toyota Fortuner V Diesel", "Andres Bonifacio", "Reservation", 1957000.0, "2026-11-07"),
-            new Transaction("TXN-1008", "Mazda CX-5 Sport", "Emilio Aguinaldo", "Inventory Addition", 1950000.0, "2026-11-08"),
-            new Transaction("TXN-1009", "Hyundai Tucson GLS", "Apolinario Mabini", "Sale", 1570000.0, "2026-11-09"),
-            new Transaction("TXN-1010", "Suzuki Jimny GLX AllGrip", "Gabriela Silang", "Inventory Addition", 1285000.0, "2026-11-10"),
-            new Transaction("TXN-1011", "Honda Civic RS Turbo", "Diego Silang", "Inventory Addition", 1798000.0, "2026-11-11"),
-            new Transaction("TXN-1012", "Mitsubishi Xpander GLS", "Melchora Aquino", "Inventory Addition", 1129000.0, "2026-11-12"),
-            new Transaction("TXN-1013", "Nissan Terra VL 4x4", "Antonio Luna", "Reservation", 2439000.0, "2026-11-13"),
-            new Transaction("TXN-1014", "Toyota Innova Zenix Q Hybrid", "Gregoria de Jesus", "Sale", 1953000.0, "2026-11-14"),
-            new Transaction("TXN-1015", "Kia Stonic Style AT", "Ramon Magsaysay", "Inventory Addition", 935000.0, "2026-11-15")
+            new Transaction("TXN-1001", "Toyota Hilux Conquest", "Juan Dela Cruz", "Sale", 1455000.00, "2026-11-01"),
+            new Transaction("TXN-1002", "Ford Ranger Wildtrak", "Maria Santos", "Sale", 1949000.00, "2026-11-02"),
+            new Transaction("TXN-1003", "Mitsubishi Montero Sport", "Carlos Gomez", "Sale", 1568000.00, "2026-11-03"),
+            new Transaction("TXN-1004", "Toyota Vios G CVT", "Ana Reyes", "Sale", 1035000.00, "2026-11-04"),
+            new Transaction("TXN-1005", "Honda CR-V V Turbo", "Pedro Penduko", "Sale", 2150000.00, "2026-11-05")
     );
 
     private FilteredList<Transaction> filteredTransactions;
+    private final DecimalFormat currencyFormatter = new DecimalFormat("#,##0.00");
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -64,23 +57,22 @@ public class TransactionController implements Initializable {
 
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         amountColumn.setCellFactory(col -> new TableCell<Transaction, Double>() {
-            private final DecimalFormat formatter = new DecimalFormat("#,##0.00");
-
             @Override
             protected void updateItem(Double amount, boolean empty) {
                 super.updateItem(amount, empty);
                 if (empty || amount == null) {
                     setText(null);
                 } else {
-                    setText("₱" + formatter.format(amount));
+                    setText("₱" + currencyFormatter.format(amount));
                 }
             }
         });
 
-        filteredTransactions = new FilteredList<>(globalTransactionList, t -> true);
+        // Show only "Sale" records in the transaction view
+        filteredTransactions = new FilteredList<>(globalTransactionList, this::isSaleTransaction);
         transactionTable.setItems(filteredTransactions);
 
-        transactionFilterCombo.setItems(FXCollections.observableArrayList("All", "Sale", "Reservation", "Inventory Addition"));
+        transactionFilterCombo.setItems(FXCollections.observableArrayList("All", "Sale"));
         transactionFilterCombo.setValue("All");
 
         transactionFilterCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateFilter());
@@ -91,18 +83,55 @@ public class TransactionController implements Initializable {
         updateTransactionStatistics();
     }
 
+    private boolean isSaleTransaction(Transaction txn) {
+        return txn != null && txn.getType() != null && txn.getType().trim().equalsIgnoreCase("Sale");
+    }
+
+    public static void recordSale(vehicle soldVehicle, String customerName) {
+        int nextCode = 1001 + globalTransactionList.size();
+        String txnId = "TXN-" + nextCode;
+        String vehicleDetails = soldVehicle.getBrand() + " " + soldVehicle.getModel() + " " + soldVehicle.getName();
+        String dateStr = LocalDate.now().toString();
+
+        globalTransactionList.add(new Transaction(
+                txnId,
+                vehicleDetails,
+                customerName,
+                "Sale",
+                soldVehicle.getPrice(),
+                dateStr
+        ));
+    }
+
+    public static int getCompletedSalesCount() {
+        int count = 0;
+        for (Transaction t : globalTransactionList) {
+            if (t.getType() != null && t.getType().trim().equalsIgnoreCase("Sale")) {
+                count++;
+            }
+        }
+        return count;
+    }
+
     private void updateFilter() {
         String selectedType = transactionFilterCombo.getValue();
         String searchText = searchTransactionField == null || searchTransactionField.getText() == null
                 ? "" : searchTransactionField.getText().toLowerCase().trim();
 
         filteredTransactions.setPredicate(txn -> {
-            boolean matchesType = selectedType == null || selectedType.equals("All")
-                    || txn.getType().equalsIgnoreCase(selectedType);
+            if (!isSaleTransaction(txn)) {
+                return false;
+            }
+
+            boolean matchesType = selectedType == null
+                    || selectedType.equals("All")
+                    || txn.getType().trim().equalsIgnoreCase(selectedType);
+
             boolean matchesSearch = searchText.isEmpty()
-                    || txn.getTransactionId().toLowerCase().contains(searchText)
-                    || txn.getVehicleDetails().toLowerCase().contains(searchText)
-                    || txn.getCustomerName().toLowerCase().contains(searchText);
+                    || (txn.getTransactionId() != null && txn.getTransactionId().toLowerCase().contains(searchText))
+                    || (txn.getVehicleDetails() != null && txn.getVehicleDetails().toLowerCase().contains(searchText))
+                    || (txn.getCustomerName() != null && txn.getCustomerName().toLowerCase().contains(searchText));
+
             return matchesType && matchesSearch;
         });
     }
@@ -110,21 +139,22 @@ public class TransactionController implements Initializable {
     private void updateTransactionStatistics() {
         double totalRevenue = 0.0;
         int completedSales = 0;
-        int activePurchases = 0;
 
         for (Transaction t : globalTransactionList) {
-            String type = t.getType() == null ? "" : t.getType().trim();
-            if (type.equalsIgnoreCase("Sale")) {
+            if (isSaleTransaction(t)) {
                 totalRevenue += t.getAmount();
                 completedSales++;
-            } else if (type.equalsIgnoreCase("Reservation")) {
-                activePurchases++;
             }
         }
 
-        DecimalFormat revFormatter = new DecimalFormat("#,##0.00");
-        totalRevenueLabel.setText("₱" + revFormatter.format(totalRevenue));
-        completedSalesLabel.setText(String.valueOf(completedSales));
-        activePurchasesLabel.setText(String.valueOf(activePurchases));
+        if (totalRevenueLabel != null) {
+            totalRevenueLabel.setText("₱" + currencyFormatter.format(totalRevenue));
+        }
+        if (completedSalesLabel != null) {
+            completedSalesLabel.setText(String.valueOf(completedSales));
+        }
+        if (activePurchasesLabel != null) {
+            activePurchasesLabel.setText("0");
+        }
     }
 }
