@@ -57,7 +57,6 @@ public class TransactionController implements Initializable {
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("type"));
         dateColumn.setCellValueFactory(new PropertyValueFactory<>("date"));
 
-        // Format amount column with commas and 2 decimal places (₱1,455,000.00)
         amountColumn.setCellValueFactory(new PropertyValueFactory<>("amount"));
         amountColumn.setCellFactory(col -> new TableCell<Transaction, Double>() {
             private final DecimalFormat formatter = new DecimalFormat("#,##0.00");
@@ -73,16 +72,15 @@ public class TransactionController implements Initializable {
             }
         });
 
-        filteredTransactions = new FilteredList<>(globalTransactionList, b -> true);
+        filteredTransactions = new FilteredList<>(globalTransactionList, t -> true);
         transactionTable.setItems(filteredTransactions);
 
         transactionFilterCombo.setItems(FXCollections.observableArrayList("All", "Sale", "Reservation", "Inventory Addition"));
         transactionFilterCombo.setValue("All");
 
-        // Listen for type filter and search input changes
-        transactionFilterCombo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateFilter());
+        transactionFilterCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateFilter());
         if (searchTransactionField != null) {
-            searchTransactionField.textProperty().addListener((observable, oldValue, newValue) -> updateFilter());
+            searchTransactionField.textProperty().addListener((obs, oldVal, newVal) -> updateFilter());
         }
 
         updateTransactionStatistics();
@@ -90,16 +88,16 @@ public class TransactionController implements Initializable {
 
     private void updateFilter() {
         String selectedType = transactionFilterCombo.getValue();
-        String searchText = searchTransactionField != null && searchTransactionField.getText() != null
-                ? searchTransactionField.getText().toLowerCase().trim() : "";
+        String searchText = searchTransactionField == null || searchTransactionField.getText() == null
+                ? "" : searchTransactionField.getText().toLowerCase().trim();
 
         filteredTransactions.setPredicate(txn -> {
-            boolean matchesType = (selectedType == null || selectedType.equals("All") || txn.getType().equalsIgnoreCase(selectedType));
-            boolean matchesSearch = searchText.isEmpty() ||
-                    txn.getTransactionId().toLowerCase().contains(searchText) ||
-                    txn.getVehicleDetails().toLowerCase().contains(searchText) ||
-                    txn.getCustomerName().toLowerCase().contains(searchText);
-
+            boolean matchesType = selectedType == null || selectedType.equals("All")
+                    || txn.getType().equalsIgnoreCase(selectedType);
+            boolean matchesSearch = searchText.isEmpty()
+                    || txn.getTransactionId().toLowerCase().contains(searchText)
+                    || txn.getVehicleDetails().toLowerCase().contains(searchText)
+                    || txn.getCustomerName().toLowerCase().contains(searchText);
             return matchesType && matchesSearch;
         });
     }
@@ -110,7 +108,7 @@ public class TransactionController implements Initializable {
         int activePurchases = 0;
 
         for (Transaction t : globalTransactionList) {
-            String type = t.getType() != null ? t.getType().trim() : "";
+            String type = t.getType() == null ? "" : t.getType().trim();
             if (type.equalsIgnoreCase("Sale")) {
                 totalRevenue += t.getAmount();
                 completedSales++;

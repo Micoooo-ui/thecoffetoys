@@ -3,9 +3,9 @@ package app;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
@@ -28,7 +28,6 @@ public class SidebarController {
 
     @FXML
     public void handleLogout(ActionEvent event) {
-        // Confirmation alert before exiting the application
         Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
         confirmAlert.setTitle("Logout Confirmation");
         confirmAlert.setHeaderText(null);
@@ -36,14 +35,12 @@ public class SidebarController {
 
         Optional<ButtonType> result = confirmAlert.showAndWait();
         if (result.isPresent() && result.get() == ButtonType.OK) {
-            // Completely stops and ends the Java program
             System.exit(0);
         }
     }
 
     private void switchScene(ActionEvent event, String fxmlFile) {
         try {
-            // Relative to the app package (where SidebarController lives)
             URL fileUrl = getClass().getResource(fxmlFile);
             if (fileUrl == null) {
                 showAlert("Navigation Error", "Could not find file: " + fxmlFile);

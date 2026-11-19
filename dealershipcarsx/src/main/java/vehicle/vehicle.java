@@ -1,9 +1,6 @@
 package vehicle;
 
-// INHERITANCE: vehicle inherits from the abstract Asset class
 public class vehicle extends Asset {
-
-    // ENCAPSULATION: Private fields protected from direct outside access
     private String brand;
     private String model;
     private String name;
@@ -20,13 +17,11 @@ public class vehicle extends Asset {
         this.status = status;
     }
 
-    // POLYMORPHISM: Overriding the abstract method from Asset with specific vehicle behavior
     @Override
     public String getAssetSummary() {
         return year + " " + brand + " " + model + " (" + status + ")";
     }
 
-    // Getters and Setters (ENCAPSULATION)
     public String getBrand() { return brand; }
     public void setBrand(String brand) { this.brand = brand; }
 

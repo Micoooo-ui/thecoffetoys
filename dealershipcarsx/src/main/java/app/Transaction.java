@@ -1,6 +1,9 @@
 package app;
 
-public class Transaction {
+import vehicle.Asset;
+import java.text.DecimalFormat;
+
+public class Transaction extends Asset {
     private String transactionId;
     private String vehicleDetails;
     private String customerName;
@@ -15,6 +18,12 @@ public class Transaction {
         this.type = type;
         this.amount = amount;
         this.date = date;
+    }
+
+    @Override
+    public String getAssetSummary() {
+        DecimalFormat df = new DecimalFormat("#,##0.00");
+        return transactionId + " - " + type + " (" + vehicleDetails + ") - ₱" + df.format(amount);
     }
 
     public String getTransactionId() { return transactionId; }

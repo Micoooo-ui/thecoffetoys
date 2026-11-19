@@ -18,6 +18,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import vehicle.Asset;
 import vehicle.vehicle;
 
 import java.io.IOException;
@@ -65,7 +66,6 @@ public class DashboardController implements Initializable {
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
 
-        // Format price column with commas and 2 decimal places
         priceColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         priceColumn.setCellFactory(col -> new TableCell<vehicle, Double>() {
             private final DecimalFormat formatter = new DecimalFormat("#,##0.00");
@@ -81,29 +81,29 @@ public class DashboardController implements Initializable {
             }
         });
 
-        filteredVehicles = new FilteredList<>(vehicleList, b -> true);
+        filteredVehicles = new FilteredList<>(vehicleList, v -> true);
         vehicleTable.setItems(filteredVehicles);
 
         statusFilterCombo.setItems(FXCollections.observableArrayList("All", "Available", "Reserved", "Sold"));
         statusFilterCombo.setValue("All");
 
-        statusFilterCombo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> updateFilter());
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> updateFilter());
+        statusFilterCombo.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> updateFilter());
+        searchField.textProperty().addListener((obs, oldVal, newVal) -> updateFilter());
 
         updateStatistics();
     }
 
     private void updateFilter() {
         String selectedStatus = statusFilterCombo.getValue();
-        String searchText = searchField.getText() != null ? searchField.getText().toLowerCase().trim() : "";
+        String searchText = searchField.getText() == null ? "" : searchField.getText().toLowerCase().trim();
 
-        filteredVehicles.setPredicate(vehicle -> {
-            boolean matchesStatus = (selectedStatus == null || selectedStatus.equals("All") || vehicle.getStatus().equalsIgnoreCase(selectedStatus));
-            boolean matchesSearch = searchText.isEmpty() ||
-                    vehicle.getBrand().toLowerCase().contains(searchText) ||
-                    vehicle.getModel().toLowerCase().contains(searchText) ||
-                    vehicle.getName().toLowerCase().contains(searchText);
-
+        filteredVehicles.setPredicate(v -> {
+            boolean matchesStatus = selectedStatus == null || selectedStatus.equals("All")
+                    || v.getStatus().equalsIgnoreCase(selectedStatus);
+            boolean matchesSearch = searchText.isEmpty()
+                    || v.getBrand().toLowerCase().contains(searchText)
+                    || v.getModel().toLowerCase().contains(searchText)
+                    || v.getName().toLowerCase().contains(searchText);
             return matchesStatus && matchesSearch;
         });
     }
@@ -114,7 +114,7 @@ public class DashboardController implements Initializable {
         int soldReservedCount = 0;
 
         for (vehicle v : vehicleList) {
-            String status = v.getStatus() != null ? v.getStatus().trim() : "";
+            String status = v.getStatus() == null ? "" : v.getStatus().trim();
             if (status.equalsIgnoreCase("Available")) {
                 availableCount++;
             } else if (status.equalsIgnoreCase("Reserved") || status.equalsIgnoreCase("Sold")) {
@@ -188,7 +188,7 @@ public class DashboardController implements Initializable {
     public void handleEditVehicle() {
         vehicle selectedVehicle = vehicleTable.getSelectionModel().getSelectedItem();
         if (selectedVehicle == null) {
-            showAlert("No Selection", "Please click and select a vehicle row from the table first!");
+            showAlert("No Selection", "Please select a vehicle row from the table first!");
             return;
         }
 
@@ -215,7 +215,6 @@ public class DashboardController implements Initializable {
             stage.showAndWait();
 
             updateStatistics();
-
         } catch (IOException e) {
             e.printStackTrace();
             showAlert("Loading Error", "Failed to open edit window: " + e.getMessage());
@@ -237,11 +236,11 @@ public class DashboardController implements Initializable {
 
         String transId = "TXN-" + (1000 + TransactionController.globalTransactionList.size() + 1);
         String vehicleDetails = selectedVehicle.getBrand() + " " + selectedVehicle.getModel() + " " + selectedVehicle.getName();
-        TransactionController.globalTransactionList.add(
-                new Transaction(transId, vehicleDetails, "Direct Buyer", "Sale", selectedVehicle.getPrice(), LocalDate.now().toString())
-        );
+        Transaction newTxn = new Transaction(transId, vehicleDetails, "Direct Buyer", "Sale", selectedVehicle.getPrice(), LocalDate.now().toString());
+        TransactionController.globalTransactionList.add(newTxn);
 
-        showAlert("Success", "Vehicle successfully marked as Sold and logged to Transactions!");
+        Asset asset = selectedVehicle;
+        showAlert("Marked as Sold", asset.getAssetSummary() + "\nLogged as " + transId);
     }
 
     @FXML
@@ -259,7 +258,7 @@ public class DashboardController implements Initializable {
     }
 
     private void showAlert(String title, String content) {
-        Alert alert = new Alert(Alert.AlertType.WARNING);
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(title);
         alert.setHeaderText(null);
         alert.setContentText(content);
