@@ -15,6 +15,7 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -25,6 +26,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -111,6 +113,17 @@ public class DashboardController implements Initializable {
                     || v.getName().toLowerCase().contains(searchText);
             return matchesStatus && matchesSearch;
         });
+    }
+
+    @FXML
+    public void handleResetFilters() {
+        if (searchField != null) {
+            searchField.clear();
+        }
+        if (statusFilterCombo != null) {
+            statusFilterCombo.setValue("All");
+        }
+        updateFilter();
     }
 
     private void updateStatistics() {
@@ -227,11 +240,49 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
+    public void handleMarkAsReserved() {
+        vehicle selectedVehicle = vehicleTable.getSelectionModel().getSelectedItem();
+        if (selectedVehicle == null) {
+            showAlert("No Selection", "Please select a vehicle row from the table to mark as Reserved!");
+            return;
+        }
+
+        selectedVehicle.setStatus("Reserved");
+        vehicleTable.refresh();
+        updateStatistics();
+        updateFilter();
+
+        String transId = "TXN-" + (1000 + TransactionController.globalTransactionList.size() + 1);
+        String vehicleDetails = selectedVehicle.getBrand() + " " + selectedVehicle.getModel() + " " + selectedVehicle.getName();
+        Transaction newTxn = new Transaction(transId, vehicleDetails, "Reserved Client", "Reservation", selectedVehicle.getPrice(), LocalDate.now().toString());
+        TransactionController.globalTransactionList.add(newTxn);
+
+        Asset vehicleAsset = selectedVehicle;
+        Asset txnAsset = newTxn;
+        showAlert("Marked as Reserved", vehicleAsset.getAssetSummary() + "\n" + txnAsset.getAssetSummary());
+    }
+
+    @FXML
     public void handleMarkAsSold() {
         vehicle selectedVehicle = vehicleTable.getSelectionModel().getSelectedItem();
         if (selectedVehicle == null) {
             showAlert("No Selection", "Please select a vehicle row from the table to mark as Sold!");
             return;
+        }
+
+        TextInputDialog dialog = new TextInputDialog("Direct Buyer");
+        dialog.setTitle("Customer Name");
+        dialog.setHeaderText("Record Vehicle Sale");
+        dialog.setContentText("Enter customer name:");
+
+        Optional<String> input = dialog.showAndWait();
+        if (!input.isPresent()) {
+            return;
+        }
+
+        String customerName = input.get().trim();
+        if (customerName.isEmpty()) {
+            customerName = "Direct Buyer";
         }
 
         selectedVehicle.setStatus("Sold");
@@ -241,11 +292,15 @@ public class DashboardController implements Initializable {
 
         String transId = "TXN-" + (1000 + TransactionController.globalTransactionList.size() + 1);
         String vehicleDetails = selectedVehicle.getBrand() + " " + selectedVehicle.getModel() + " " + selectedVehicle.getName();
-        Transaction newTxn = new Transaction(transId, vehicleDetails, "Direct Buyer", "Sale", selectedVehicle.getPrice(), LocalDate.now().toString());
+        Transaction newTxn = new Transaction(transId, vehicleDetails, customerName, "Sale", selectedVehicle.getPrice(), LocalDate.now().toString());
         TransactionController.globalTransactionList.add(newTxn);
 
-        Asset asset = selectedVehicle;
-        showAlert("Marked as Sold", asset.getAssetSummary() + "\nLogged as " + transId);
+        Asset vehicleAsset = selectedVehicle;
+        Asset txnAsset = newTxn;
+        showAlert("Marked as Sold",
+                "Customer: " + customerName + "\n" +
+                        vehicleAsset.getAssetSummary() + "\n" +
+                        txnAsset.getAssetSummary());
     }
 
     @FXML
