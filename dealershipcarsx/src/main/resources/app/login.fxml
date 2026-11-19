@@ -33,7 +33,7 @@
                 <Font name="Bookman Old Style" size="12.0" />
             </font>
         </Button>
-        <Button blendMode="SRC_ATOP" layoutX="80.0" layoutY="282.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: transparent;" text="FORGOT PASSWORD" textFill="WHITE">
+        <Button blendMode="SRC_ATOP" layoutX="80.0" layoutY="282.0" mnemonicParsing="false" onAction="#handleForgotPassword" prefHeight="31.0" prefWidth="120.0" style="-fx-background-color: transparent;" text="FORGOT PASSWORD" textFill="WHITE">
             <VBox.margin>
                 <Insets bottom="50.0" left="220.0" right="70.0" top="-80.0" />
             </VBox.margin>

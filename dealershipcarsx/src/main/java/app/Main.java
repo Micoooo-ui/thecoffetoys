@@ -6,23 +6,27 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import java.io.IOException;
+import java.net.URL;
 
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) {
         try {
-            // Load the login screen first
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
+            URL fxmlUrl = getClass().getResource("/app/login.fxml");
+            if (fxmlUrl == null) {
+                System.err.println("Could not find /app/login.fxml");
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(fxmlUrl);
             Parent root = loader.load();
 
-            primaryStage.setTitle("Torque & Tread Dealerships - Admin Log In");
+            primaryStage.setTitle("Torque and Tread Dealership - Admin Log In");
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);
-            primaryStage.centerOnScreen();
             primaryStage.show();
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
