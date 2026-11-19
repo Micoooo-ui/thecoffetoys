@@ -35,3 +35,5 @@ public class Main extends Application {
         launch(args);
     }
 }
+
+//mang remove nalng ko text amo nlng na kolang
