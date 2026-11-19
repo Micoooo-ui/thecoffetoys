@@ -17,7 +17,7 @@ public class Main extends Application {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("login.fxml"));
             Parent root = loader.load();
 
-            primaryStage.setTitle("VYC Motors - Admin Log In");
+            primaryStage.setTitle("Torque & Tread Auto - Admin Log In");
             primaryStage.setScene(new Scene(root));
             primaryStage.setResizable(false);
             primaryStage.centerOnScreen();
