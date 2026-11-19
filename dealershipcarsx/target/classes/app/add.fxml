@@ -55,7 +55,7 @@
                         <Insets bottom="5.0" top="5.0" />
                     </VBox.margin>
                     <children>
-                        <Label text="NAME" />
+                        <Label text="VARIANT" />
                         <TextField fx:id="nameField" promptText="e.g.. Sedan" style="-fx-background-color: #F1F5F9; -fx-background-radius: 6; -fx-prompt-text-fill: #94A3B8; -fx-padding: 8;">
                             <VBox.margin>
                                 <Insets right="330.0" />
@@ -91,7 +91,7 @@
                 <VBox prefHeight="61.0" prefWidth="660.0" style="-fx-border-color: #E2E8F0; -fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 15; -fx-background-color: #ffffff;">
                     <children>
                         <Label text="STATUS" />
-                        <ComboBox fx:id="statusField" prefHeight="25.0" prefWidth="200.0" visibleRowCount="2" />
+                        <ComboBox fx:id="statusField" prefHeight="25.0" prefWidth="200.0" visibleRowCount="3" />
                     </children>
                     <padding>
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />

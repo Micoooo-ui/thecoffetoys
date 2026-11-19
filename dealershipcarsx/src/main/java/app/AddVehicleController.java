@@ -4,7 +4,6 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
@@ -20,17 +19,16 @@ public class AddVehicleController implements Initializable {
     @FXML private TextField nameField;
     @FXML private TextField yearField;
     @FXML private TextField priceField;
-    @FXML private ComboBox<String> statusCombo;
-    @FXML private Button saveButton;
+    @FXML private ComboBox<String> statusField;
 
     private DashboardController dashboardController;
     private vehicle vehicleToEdit;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        if (statusCombo != null) {
-            statusCombo.setItems(FXCollections.observableArrayList("Available", "Reserved", "Sold"));
-            statusCombo.setValue("Available");
+        if (statusField != null) {
+            statusField.setItems(FXCollections.observableArrayList("Reserved", "Available", "Sold"));
+            statusField.setValue("Available");
         }
     }
 
@@ -45,8 +43,9 @@ public class AddVehicleController implements Initializable {
         if (nameField != null) nameField.setText(v.getName());
         if (yearField != null) yearField.setText(String.valueOf(v.getYear()));
         if (priceField != null) priceField.setText(String.valueOf(v.getPrice()));
-        if (statusCombo != null) statusCombo.setValue(v.getStatus());
-        if (saveButton != null) saveButton.setText("Update Vehicle");
+        if (statusField != null) {
+            statusField.setValue(v.getStatus() != null ? v.getStatus() : "Available");
+        }
     }
 
     @FXML
@@ -56,7 +55,8 @@ public class AddVehicleController implements Initializable {
         String name = nameField.getText() == null ? "" : nameField.getText().trim();
         String yearText = yearField.getText() == null ? "" : yearField.getText().trim();
         String priceText = priceField.getText() == null ? "" : priceField.getText().trim();
-        String status = (statusCombo != null && statusCombo.getValue() != null) ? statusCombo.getValue() : "Available";
+        String status = (statusField != null && statusField.getValue() != null)
+                ? statusField.getValue() : "Available";
 
         if (brand.isEmpty() || model.isEmpty() || name.isEmpty() || yearText.isEmpty() || priceText.isEmpty()) {
             showWarning("Missing Input", "Please fill in all fields before saving.");

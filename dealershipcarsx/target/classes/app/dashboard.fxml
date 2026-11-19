@@ -110,7 +110,7 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                     </padding>
                 </HBox>
-                <HBox prefHeight="42.0" prefWidth="800.0">
+                <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="800.0">
                     <children>
                         <ComboBox fx:id="statusFilterCombo" editable="false" prefHeight="25.0" prefWidth="186.0" promptText="All Status" visibleRowCount="4" />
                         <TextField fx:id="searchField" prefHeight="25.0" prefWidth="178.0" promptText="Search by brand or model">
@@ -118,37 +118,31 @@
                                 <Insets left="20.0" right="15.0" />
                             </HBox.margin>
                         </TextField>
-                        <Button mnemonicParsing="false" onAction="#handleResetFilters" prefHeight="25.0" prefWidth="75.0" style="-fx-background-color: transparent; -fx-border-color: #CBD5E1; -fx-background-radius: 6px; -fx-text-fill: #334155; -fx-cursor: hand;" text="RESET">
-                            <HBox.margin>
-                                <Insets left="1.0" right="8.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Pane prefHeight="25.0" prefWidth="30.0" />
-                        <Button mnemonicParsing="false" onAction="#openAddVehicleModal" prefHeight="25.0" prefWidth="105.0" style="-fx-background-color: #1E293B; -fx-text-fill: #ffffff; -fx-background-radius: 6px; -fx-cursor: hand;" text="ADD VEHICLE">
-                            <HBox.margin>
-                                <Insets left="1.0" right="8.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#handleMarkAsReserved" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: transparent; -fx-border-color: #CBD5E1; -fx-background-radius: 6px; -fx-text-fill: #334155; -fx-cursor: hand;" text="RESERVED">
-                            <HBox.margin>
-                                <Insets left="1.0" right="8.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#handleMarkAsSold" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #059669; -fx-background-radius: 6px; -fx-text-fill: white; -fx-cursor: hand;" text="SOLD">
-                            <HBox.margin>
-                                <Insets left="1.0" right="8.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#handleEditVehicle" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-border-color: #CBD5E1; -fx-background-radius: 6px; -fx-text-fill: #334155; -fx-cursor: hand;" text="EDIT">
-                            <HBox.margin>
-                                <Insets left="1.0" right="8.0" />
-                            </HBox.margin>
-                        </Button>
-                        <Button mnemonicParsing="false" onAction="#handleDeleteVehicle" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-border-color: #CBD5E1; -fx-background-radius: 6px; -fx-text-fill: #334155; -fx-cursor: hand;" text="DELETE">
-                            <HBox.margin>
-                                <Insets left="1.0" right="8.0" />
-                            </HBox.margin>
-                        </Button>
+                        <Pane prefHeight="25.0" prefWidth="20.0" HBox.hgrow="ALWAYS" />
+                        <HBox alignment="CENTER_RIGHT" spacing="0.0">
+                            <children>
+                                <Button mnemonicParsing="false" onAction="#openAddVehicleModal" prefHeight="25.0" prefWidth="105.0" style="-fx-background-color: #1E293B; -fx-text-fill: #ffffff; -fx-background-radius: 6px; -fx-cursor: hand;" text="ADD VEHICLE">
+                                    <HBox.margin>
+                                        <Insets left="1.0" right="8.0" />
+                                    </HBox.margin>
+                                </Button>
+                                <Button mnemonicParsing="false" onAction="#handleMarkAsSold" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #059669; -fx-background-radius: 6px; -fx-text-fill: white; -fx-cursor: hand;" text="SOLD">
+                                    <HBox.margin>
+                                        <Insets left="1.0" right="8.0" />
+                                    </HBox.margin>
+                                </Button>
+                                <Button mnemonicParsing="false" onAction="#handleEditVehicle" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-border-color: #CBD5E1; -fx-background-radius: 6px; -fx-text-fill: #334155; -fx-cursor: hand;" text="EDIT">
+                                    <HBox.margin>
+                                        <Insets left="1.0" right="8.0" />
+                                    </HBox.margin>
+                                </Button>
+                                <Button mnemonicParsing="false" onAction="#handleDeleteVehicle" prefHeight="30.0" prefWidth="80.0" style="-fx-background-color: transparent; -fx-border-color: #CBD5E1; -fx-background-radius: 6px; -fx-text-fill: #334155; -fx-cursor: hand;" text="DELETE">
+                                    <HBox.margin>
+                                        <Insets left="1.0" right="0.0" />
+                                    </HBox.margin>
+                                </Button>
+                            </children>
+                        </HBox>
                     </children>
                     <VBox.margin>
                         <Insets bottom="-320.0" left="50.0" right="50.0" top="230.0" />
@@ -158,7 +152,7 @@
                     <columns>
                         <TableColumn fx:id="brandColumn" minWidth="150.0" prefWidth="120.0" text="Brand" />
                         <TableColumn fx:id="modelColumn" minWidth="150.0" prefWidth="120.0" text="Model" />
-                        <TableColumn fx:id="nameColumn" minWidth="150.0" prefWidth="120.0" text="Name" />
+                        <TableColumn fx:id="nameColumn" minWidth="150.0" prefWidth="120.0" text="Variant" />
                         <TableColumn fx:id="yearColumn" minWidth="150.0" prefWidth="80.0" text="Year" />
                         <TableColumn fx:id="priceColumn" minWidth="150.0" prefWidth="120.0" text="Price" />
                         <TableColumn fx:id="statusColumn" minWidth="150.0" prefWidth="100.0" text="Status" />
