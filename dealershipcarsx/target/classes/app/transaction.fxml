@@ -15,7 +15,7 @@
                 <Insets bottom="25.0" left="25.0" right="25.0" top="20.0" />
             </padding>
             <children>
-                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" text="Transaction" textFill="#1e293b">
+                <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="Infinity" text="Sales and Transaction" textFill="#1e293b">
                     <font>
                         <Font name="Arial Rounded MT Bold" size="24.0" />
                     </font>
